@@ -54,7 +54,7 @@ public class StartCommand implements CommandExecutor {
 
 
 
-
+gameManager.SetGameRunning(true);
         return true;
     }
 }
