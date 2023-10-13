@@ -1,14 +1,17 @@
 package nlerik.huntervsrunner;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
 public final class HunterVsRunner extends JavaPlugin {
-//hoientest
+
+    private GameManager gameManager;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
-
+        gameManager = new GameManager();
+        Bukkit.getServer().getPluginManager().registerEvents(new GameListener(gameManager), this);
     }
 
     @Override
