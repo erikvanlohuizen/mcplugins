@@ -15,7 +15,7 @@ public class GameManager {
     }
 
     public void SetGameRunning(boolean gameRunning) {
-        gameRunning = gameRunning;
+        this.gameRunning = gameRunning;
     }
 
     public void StopGame() {

@@ -2,3 +2,13 @@ name: HunterVsRunner
 version: '${project.version}'
 main: nlerik.huntervsrunner.HunterVsRunner
 api-version: '1.20'
+commands:
+  joinhunter:
+    description: Join the hunter team
+    usage: /joinhunter
+  joinrunner:
+    description: Join the runner team
+    usage: /joinrunner
+  startgame:
+    description: Start the game
+    usage: /startgame
