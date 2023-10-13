@@ -1,0 +1,4 @@
+name: HunterVsRunner
+version: '${project.version}'
+main: nlerik.huntervsrunner.HunterVsRunner
+api-version: '1.20'
