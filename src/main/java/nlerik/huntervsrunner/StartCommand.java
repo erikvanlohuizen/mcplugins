@@ -44,6 +44,7 @@ public class StartCommand implements CommandExecutor {
             }
         // Logic to handle joining the runner team
         Player runner = gameManager.getRunner();
+            runner.setGameMode(GameMode.SURVIVAL);
             PotionEffect swiftnessEffect = new PotionEffect(PotionEffectType.SPEED, 20 * 60, 1, true, false);
             runner.addPotionEffect(swiftnessEffect);
             runner.setFoodLevel(20);
