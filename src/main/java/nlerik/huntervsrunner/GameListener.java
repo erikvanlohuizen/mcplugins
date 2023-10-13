@@ -20,6 +20,8 @@ public class GameListener implements Listener {
         // Logic to handle player movement event
         //if player is runner update compasses in inventories of hunters
 
+        if (!gameManager.IsGameRunning()) { return; }
+
         if (event.getPlayer().equals(gameManager.getRunner())) {
             for (Player hunter : gameManager.getHunters()) {
                 hunter.setCompassTarget(event.getPlayer().getLocation());
@@ -31,6 +33,8 @@ public class GameListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         // Logic to handle player death event
         //if player is hunter give a new compass
+        if (!gameManager.IsGameRunning()) { return; }
+
         if (gameManager.getHunters().contains(event.getPlayer())) {
             //add compass to inventory
             event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
