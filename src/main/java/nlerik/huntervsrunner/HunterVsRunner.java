@@ -3,6 +3,8 @@ package nlerik.huntervsrunner;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
+
 public final class HunterVsRunner extends JavaPlugin {
 
     private GameManager gameManager;
@@ -16,6 +18,7 @@ public final class HunterVsRunner extends JavaPlugin {
         getCommand("joinhunter").setExecutor(new JoinHunterCommand(gameManager));
         getCommand("joinrunner").setExecutor(new JoinRunnerCommand(gameManager));
         getCommand("startgame").setExecutor(new StartCommand(gameManager));
+        getCommand("huntervrunner").setExecutor(new GameMenu(gameManager));
 
         Bukkit.getServer().getPluginManager().registerEvents(new GameListener(gameManager), this);
     }
@@ -24,6 +27,7 @@ public final class HunterVsRunner extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
 
 }
 
