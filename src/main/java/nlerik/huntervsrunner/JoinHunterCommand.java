@@ -16,6 +16,7 @@ public class JoinHunterCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         gameManager.AddHunter(player);
+        player.sendMessage("You have chosen Hunter!");
         // Logic to handle joining the hunter team
         return true;
     }

@@ -36,22 +36,11 @@ public class GameMenuCommand implements CommandExecutor {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.sendMessage(option1, option2, option3);
         }
-
-        if ("/joinhunter".equals(option1)) {
-            player.sendMessage("You have chosen Hunter!");
-            // Perform action for Option 1
-        } else if ("/joinrunner".equals(option2)) {
-            player.sendMessage("You have chosen Runner!");
-            // Perform action for Option 2
-        } else if ("/startgame".equals(option3)) {
-            player.sendMessage("Let the game begin!");
-            // Perform action for Option 3
-        }
     }
     private TextComponent createClickableText(String text, String command) {
         TextComponent clickableText = new TextComponent(ChatColor.YELLOW + text);
         clickableText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         return clickableText;
-
     }
+
 }

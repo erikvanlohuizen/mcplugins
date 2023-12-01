@@ -16,6 +16,7 @@ public class JoinRunnerCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         gameManager.SetRunner(player);
+        player.sendMessage("You have chosen Runner!");
         // Logic to handle joining the hunter team
         return true;
     }

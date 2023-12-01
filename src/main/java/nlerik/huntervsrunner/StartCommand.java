@@ -31,6 +31,7 @@ public class StartCommand implements CommandExecutor {
                 player.setGameMode(GameMode.SURVIVAL);
                 //PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, 600, 0);
                 //player.addPotionEffect(blindnessEffect);
+                player.sendMessage("Let the game begin!");
                 player.setFoodLevel(20);
                 player.setHealth(20);
                 player.setSaturation(20);
@@ -45,6 +46,7 @@ public class StartCommand implements CommandExecutor {
         // Logic to handle joining the runner team
         Player runner = gameManager.getRunner();
             runner.setGameMode(GameMode.SURVIVAL);
+            runner.sendMessage("Let the game begin!");
             PotionEffect swiftnessEffect = new PotionEffect(PotionEffectType.SPEED, 20 * 60, 1, true, false);
             runner.addPotionEffect(swiftnessEffect);
             runner.setFoodLevel(20);
