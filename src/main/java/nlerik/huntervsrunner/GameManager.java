@@ -16,7 +16,7 @@ public class GameManager {
     private Player runner;
     private List<Player> hunters = new ArrayList<>();
 
-    private Map<Integer, RunnerLocation> playerLocations = new HashMap<>();
+    private Map<Integer, Location> runnerLocations = new HashMap<>();
 
     public boolean IsGameRunning() {
         return gameRunning;
@@ -30,15 +30,17 @@ public class GameManager {
         gameRunning = false;
     }
 
-    public void updateRunnerLocation(Location location, int dimension) {
-        RunnerLocation runnerLocation = new RunnerLocation(location);
-        playerLocations.put(dimension, runnerLocation);
+    public void updateRunnerLocation(int dimension, Location location) {
+        runnerLocations.put(dimension, location);
     }
 
-    public RunnerLocation getLastLocation(int dimension) {
+    public Location getLastLocation(int dimension) {
 
-        RunnerLocation runnerLocation = playerLocations.get(dimension);
-        return runnerLocation;
+        if (!runnerLocations.containsKey(dimension)) {
+            return null;
+        }
+
+        return runnerLocations.get(dimension);
     }
 
     public void AddHunter(Player player) {
@@ -78,14 +80,18 @@ public class GameManager {
 
             if (!this.IsGameRunning()) { return; }
 
-            this.updateRunnerLocation(runner.getLocation(), runner.getWorld().getEnvironment().getId());
+            int runnerDimension = runner.getWorld().getEnvironment().getId();
+            this.updateRunnerLocation(runnerDimension, runner.getLocation());
 
             for (Player hunter : this.getHunters()) {
-                RunnerLocation runnerLocation = this.getLastLocation(hunter.getWorld().getEnvironment().getId());
-                if (runnerLocation == null) {
+
+                int hunterDimension = hunter.getWorld().getEnvironment().getId();
+                Location runnerLocation = this.getLastLocation(hunterDimension);
+
+                if (runnerLocation == null || hunterDimension != runnerDimension) {
                     hunter.setCompassTarget(hunter.getLocation());
                 } else {
-                    hunter.setCompassTarget(runnerLocation.location);
+                    hunter.setCompassTarget(runnerLocation);
                 }
             }
         }, delay, delay);
