@@ -28,33 +28,25 @@ public class GameMenuCommand implements CommandExecutor {
     private void openMenu(Player player) {
         // Implement your chat-based menu logic here
         player.sendMessage(ChatColor.GREEN + "Click here to open the menu: ");
-        TextComponent option1 = createClickableText("Join the hunters", "/joinhunter\n");
-        TextComponent option2 = createClickableText("Join the runners", "/joinrunner\n");
-        TextComponent option3 = createClickableText("Start the game", "/startgame\n");
+        TextComponent option1 = createClickableText("Join the hunters\n", "/joinhunter");
+        TextComponent option2 = createClickableText("Join the runners\n", "/joinrunner");
+        TextComponent option3 = createClickableText("Start the game\n", "/startgame");
 
         // Stuur de klikbare teksten naar de speler
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.sendMessage(option1, option2, option3);
         }
-    }
-    private void executeChoice(Player player, int choice) {
-        switch (choice) {
-            case 1:
-                player.sendMessage(ChatColor.GREEN + "You have chosen Hunter!");
-                // Voer hier de acties uit voor Optie 1
-                break;
-            case 2:
-                player.sendMessage(ChatColor.GREEN + "You have chosen Runner!");
-                // Voer hier de acties uit voor Optie 2
-                break;
-            case 3:
-                player.sendMessage(ChatColor.GREEN + "Let the game begin!");
-                // Voer hier de acties uit voor Optie 3
-                break;
-        }
-    }
-    private void broadcastMessage(String message) {
 
+        if ("/joinhunter".equals(option1)) {
+            player.sendMessage("You have chosen Hunter!");
+            // Perform action for Option 1
+        } else if ("/joinrunner".equals(option2)) {
+            player.sendMessage("You have chosen Runner!");
+            // Perform action for Option 2
+        } else if ("/startgame".equals(option3)) {
+            player.sendMessage("Let the game begin!");
+            // Perform action for Option 3
+        }
     }
     private TextComponent createClickableText(String text, String command) {
         TextComponent clickableText = new TextComponent(ChatColor.YELLOW + text);
