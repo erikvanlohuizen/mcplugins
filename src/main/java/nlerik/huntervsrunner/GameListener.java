@@ -20,17 +20,21 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        // Logic to handle player movement event
-        //if player is runner update compasses in inventories of hunters
-
-        //keep track of last location from each dimension
 
         if (!gameManager.IsGameRunning()) { return; }
 
         if (event.getPlayer().getUniqueId().equals(gameManager.getRunner().getUniqueId())) {
 
+            gameManager.updateRunnerLocation(event.getPlayer().getLocation(), event.getPlayer().getWorld().getEnvironment().getId());
             for (Player hunter : gameManager.getHunters()) {
-                hunter.setCompassTarget(event.getPlayer().getLocation());
+
+                RunnerLocation runnerLocation = gameManager.getLastLocation(hunter.getWorld().getEnvironment().getId());
+
+                if (runnerLocation == null) {
+                    hunter.setCompassTarget(hunter.getLocation());
+                } else {
+                    hunter.setCompassTarget(runnerLocation.location);
+                }
             }
         }
     }

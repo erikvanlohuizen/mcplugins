@@ -1,14 +1,19 @@
 package nlerik.huntervsrunner;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameManager {
 
     private boolean gameRunning = false;
     private Player runner;
     private List<Player> hunters = new ArrayList<>();
+
+    private Map<Integer, RunnerLocation> playerLocations = new HashMap<>();
 
     public boolean IsGameRunning() {
         return gameRunning;
@@ -20,6 +25,17 @@ public class GameManager {
 
     public void StopGame() {
         gameRunning = false;
+    }
+
+    public void updateRunnerLocation(Location location, int dimension) {
+        RunnerLocation runnerLocation = new RunnerLocation(location);
+        playerLocations.put(dimension, runnerLocation);
+    }
+
+    public RunnerLocation getLastLocation(int dimension) {
+
+        RunnerLocation runnerLocation = playerLocations.get(dimension);
+        return runnerLocation;
     }
 
     public void AddHunter(Player player) {
