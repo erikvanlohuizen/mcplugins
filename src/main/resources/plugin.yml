@@ -12,6 +12,6 @@ commands:
   startgame:
     description: Start the game
     usage: /startgame
-  Openmenu:
+  huntervsrunner:
     description: Open het menu
-    usage: /huntervrunner
+    usage: /huntervsrunner

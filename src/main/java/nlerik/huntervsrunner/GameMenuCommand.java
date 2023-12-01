@@ -8,10 +8,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 
-public class GameMenu implements CommandExecutor {
-    public GameMenu(GameManager gameManager) {
-    }
+public class GameMenuCommand implements CommandExecutor {
+    private final GameManager gameManager;
 
+    public GameMenuCommand(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
