@@ -29,8 +29,8 @@ public class StartCommand implements CommandExecutor {
         List<Player> hunters = gameManager.getHunters();
             for (Player player : hunters) {
                 player.setGameMode(GameMode.SURVIVAL);
-                PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, 600, 0);
-                player.addPotionEffect(blindnessEffect);
+                //PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, 600, 0);
+                //player.addPotionEffect(blindnessEffect);
                 player.setFoodLevel(20);
                 player.setHealth(20);
                 player.setSaturation(20);
