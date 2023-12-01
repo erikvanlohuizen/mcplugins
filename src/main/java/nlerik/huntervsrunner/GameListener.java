@@ -19,32 +19,12 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-
-        if (!gameManager.IsGameRunning()) { return; }
-
-        if (event.getPlayer().getUniqueId().equals(gameManager.getRunner().getUniqueId())) {
-
-            gameManager.updateRunnerLocation(event.getPlayer().getLocation(), event.getPlayer().getWorld().getEnvironment().getId());
-            for (Player hunter : gameManager.getHunters()) {
-
-                RunnerLocation runnerLocation = gameManager.getLastLocation(hunter.getWorld().getEnvironment().getId());
-
-                if (runnerLocation == null) {
-                    hunter.setCompassTarget(hunter.getLocation());
-                } else {
-                    hunter.setCompassTarget(runnerLocation.location);
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         // Logic to handle player death event
         //if player is hunter give a new compass
         if (!gameManager.IsGameRunning()) { return; }
 
+        //contains not working
         if (gameManager.getHunters().contains(event.getPlayer())) {
             //add compass to inventory
             event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));

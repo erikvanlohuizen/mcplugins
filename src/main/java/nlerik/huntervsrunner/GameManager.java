@@ -1,7 +1,10 @@
 package nlerik.huntervsrunner;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,5 +70,24 @@ public class GameManager {
 
     public List<Player> getHunters() {
         return hunters;
+    }
+
+    public void startCompassUpdater(JavaPlugin pluginInstance) {
+        int delay = 20 * 1; // 1 second
+        Bukkit.getScheduler().runTaskTimer(pluginInstance, () -> {
+
+            if (!this.IsGameRunning()) { return; }
+
+            this.updateRunnerLocation(runner.getLocation(), runner.getWorld().getEnvironment().getId());
+
+            for (Player hunter : this.getHunters()) {
+                RunnerLocation runnerLocation = this.getLastLocation(hunter.getWorld().getEnvironment().getId());
+                if (runnerLocation == null) {
+                    hunter.setCompassTarget(hunter.getLocation());
+                } else {
+                    hunter.setCompassTarget(runnerLocation.location);
+                }
+            }
+        }, delay, delay);
     }
 }

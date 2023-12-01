@@ -13,6 +13,7 @@ public final class HunterVsRunner extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         gameManager = new GameManager();
+        gameManager.startCompassUpdater(this);
 
         // Commands
         getCommand("joinhunter").setExecutor(new JoinHunterCommand(gameManager));
