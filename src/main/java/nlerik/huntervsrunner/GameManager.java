@@ -3,6 +3,7 @@ package nlerik.huntervsrunner;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
@@ -19,7 +20,7 @@ public class GameManager {
     private Player runner;
     private List<Player> hunters = new ArrayList<>();
 
-    private Map<Integer, Location> runnerLocations = new HashMap<>();
+    private Map<World.Environment, Location> runnerLocations = new HashMap<>();
 
     public boolean IsGameRunning() {
         return gameRunning;
@@ -33,11 +34,11 @@ public class GameManager {
         gameRunning = false;
     }
 
-    public void updateRunnerLocation(int dimension, Location location) {
+    public void updateRunnerLocation(World.Environment dimension, Location location) {
         runnerLocations.put(dimension, location);
     }
 
-    public Location getLastLocation(int dimension) {
+    public Location getLastLocation(World.Environment dimension) {
 
         if (!runnerLocations.containsKey(dimension)) {
             return null;
@@ -81,35 +82,52 @@ public class GameManager {
         int delay = 20 * 1; // 1 second
         Bukkit.getScheduler().runTaskTimer(pluginInstance, () -> {
 
-            if (!this.IsGameRunning()) { return; }
+            if (!this.IsGameRunning()) {
+                return;
+            }
 
-            int runnerDimension = runner.getWorld().getEnvironment().getId();
+            World.Environment runnerDimension = runner.getWorld().getEnvironment();
             this.updateRunnerLocation(runnerDimension, runner.getLocation());
 
             for (Player hunter : this.getHunters()) {
 
-                int hunterDimension = hunter.getWorld().getEnvironment().getId();
-                Location runnerLocation = this.getLastLocation(hunterDimension);
+                World.Environment hunterDimension = hunter.getWorld().getEnvironment();
 
-                if (runnerLocation == null || hunterDimension != runnerDimension) {
+                if ((runnerDimension == World.Environment.NORMAL || runnerDimension == World.Environment.NETHER) && hunterDimension == World.Environment.NORMAL) {
+                    hunter.setCompassTarget(this.getLastLocation(hunterDimension));
+                }
 
-                    //get compass itemstack from inventory, not from a specified slot like mainhand
-                    ItemStack held = hunter.getInventory().getItemInMainHand();
-                    if (held.getType() != Material.COMPASS) {
-                        continue;
-                    }
-                    final CompassMeta meta = (CompassMeta) held.getItemMeta(); // We know that the item in this even is a compass because of our check, so we the item's ItemMeta to CompassMeta.
-                    // Should be noted CompassMeta does extend ItemMeta.
-                    meta.setLodestone(runner.getLocation()); // Using a second account to test this, called the accounts name directly. You'll probably want to implement some null checking.
-                    meta.setLodestoneTracked(false); // If this is set to true (default) it will not work as it would require a lodestone to be present at the location. Just set it to false.
-                    meta.setDisplayName("This is a tracker."); // Set a display name because hey, I want to be fancy.
-                    held.setItemMeta(meta); // Update the item's ItemMeta to our new updated one.
+                if (runnerDimension == World.Environment.NETHER && hunterDimension == World.Environment.NETHER) {
+                    updateCompassInInventory(hunter, runner.getLocation());
+                }
 
-
-                } else {
-                    hunter.setCompassTarget(runnerLocation);
+                if (runnerDimension == World.Environment.THE_END && hunterDimension == World.Environment.THE_END) {
+                    updateCompassInInventory(hunter, runner.getLocation());
                 }
             }
         }, delay, delay);
+    }
+
+    public void updateCompassInInventory(Player hunter, Location targetLocation) {
+        // Iterate over all items in the player's inventory
+        for (ItemStack item : hunter.getInventory().getContents()) {
+            // Check if the item is not null and is a compass
+            if (item != null && item.getType() == Material.COMPASS) {
+                // Cast the item's meta to CompassMeta
+                CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
+
+                if (compassMeta != null) {
+                    // Here you can modify the compassMeta, for example:
+                    compassMeta.setLodestone(targetLocation);
+                    compassMeta.setLodestoneTracked(false); // Set to false to avoid the compass being linked to a lodestone block
+
+                    // Apply the modified meta back to the item
+                    item.setItemMeta(compassMeta);
+
+                    // If you only want to update the first compass found, break the loop
+                    break;
+                }
+            }
+        }
     }
 }
