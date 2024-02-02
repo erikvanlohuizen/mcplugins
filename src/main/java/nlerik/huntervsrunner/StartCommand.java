@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -27,10 +28,14 @@ public class StartCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Logic to handle joining the hunter team
         List<Player> hunters = gameManager.getHunters();
+        World world = hunters.get(0).getWorld(); // Assuming the hunters are in the same world
+
+        // Set the difficulty to NORMAL
+        world.setDifficulty(org.bukkit.Difficulty.NORMAL);
             for (Player player : hunters) {
                 player.setGameMode(GameMode.SURVIVAL);
-                //PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, 600, 0);
-                //player.addPotionEffect(blindnessEffect);
+                PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, 600, 0);
+                player.addPotionEffect(blindnessEffect);
                 player.sendMessage("Let the game begin!");
                 player.setFoodLevel(20);
                 player.setHealth(20);
