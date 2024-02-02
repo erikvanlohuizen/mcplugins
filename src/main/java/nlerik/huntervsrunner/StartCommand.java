@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
+import org.bukkit.ChatColor;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -42,6 +42,9 @@ public class StartCommand implements CommandExecutor {
                 compassMeta.setDisplayName("Hunter's Compass");
                 compass.setItemMeta(compassMeta);
                 player.getInventory().addItem(compass);
+                String title = ChatColor.RED + "Game Start!";
+                String subtitle = ChatColor.GOLD + "Hunters, the game has begun!";
+                player.sendTitle(title, subtitle, 10, 70, 20);
             }
         // Logic to handle joining the runner team
         Player runner = gameManager.getRunner();
@@ -54,6 +57,9 @@ public class StartCommand implements CommandExecutor {
             runner.setSaturation(20);
             Inventory runnerInventory = runner.getInventory();
             runnerInventory.clear();
+            String runnerTitle = ChatColor.BLUE + "Game Start!";
+            String runnerSubtitle = ChatColor.GREEN + "Runner, the game has begun!";
+            runner.sendTitle(runnerTitle, runnerSubtitle, 10, 70, 20);
 
 
 
