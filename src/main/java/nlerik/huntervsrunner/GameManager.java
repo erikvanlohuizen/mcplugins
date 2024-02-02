@@ -2,7 +2,10 @@ package nlerik.huntervsrunner;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -89,7 +92,20 @@ public class GameManager {
                 Location runnerLocation = this.getLastLocation(hunterDimension);
 
                 if (runnerLocation == null || hunterDimension != runnerDimension) {
-                    hunter.setCompassTarget(hunter.getLocation());
+
+                    //get compass itemstack from inventory, not from a specified slot like mainhand
+                    ItemStack held = hunter.getInventory().getItemInMainHand();
+                    if (held.getType() != Material.COMPASS) {
+                        continue;
+                    }
+                    final CompassMeta meta = (CompassMeta) held.getItemMeta(); // We know that the item in this even is a compass because of our check, so we the item's ItemMeta to CompassMeta.
+                    // Should be noted CompassMeta does extend ItemMeta.
+                    meta.setLodestone(runner.getLocation()); // Using a second account to test this, called the accounts name directly. You'll probably want to implement some null checking.
+                    meta.setLodestoneTracked(false); // If this is set to true (default) it will not work as it would require a lodestone to be present at the location. Just set it to false.
+                    meta.setDisplayName("This is a tracker."); // Set a display name because hey, I want to be fancy.
+                    held.setItemMeta(meta); // Update the item's ItemMeta to our new updated one.
+
+
                 } else {
                     hunter.setCompassTarget(runnerLocation);
                 }
