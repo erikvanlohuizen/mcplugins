@@ -23,7 +23,7 @@ public class JoinHunterCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         gameManager.AddHunter(player);
-        player.sendMessage("You have chosen Hunter!");
+        player.sendMessage(player.getName() + " has chosen Hunter!");
 
         // Send a colored title when the player chooses Hunter
         String title = ChatColor.GREEN + "Welcome " + ChatColor.YELLOW + "Hunter!";

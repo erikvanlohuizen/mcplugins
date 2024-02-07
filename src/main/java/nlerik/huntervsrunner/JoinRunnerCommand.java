@@ -22,7 +22,7 @@ public class JoinRunnerCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         gameManager.SetRunner(player);
-        player.sendMessage("You have chosen Runner!");
+        player.sendMessage(player.getName() + " has chosen Runner!");
 
         // Send a colored title when the player chooses Runner
         String title = ChatColor.BLUE + "Welcome " + ChatColor.GREEN + "Runner!";
