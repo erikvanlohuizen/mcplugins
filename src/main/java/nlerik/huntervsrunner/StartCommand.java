@@ -48,7 +48,7 @@ public class StartCommand implements CommandExecutor {
                 compass.setItemMeta(compassMeta);
                 player.getInventory().addItem(compass);
                 String title = ChatColor.RED + "Game Start!";
-                String subtitle = ChatColor.GOLD + "Hunters, the game has begun!";
+                String subtitle = ChatColor.RED + "Hunters, the game has begun!";
                 player.sendTitle(title, subtitle, 10, 70, 20);
             }
         // Logic to handle joining the runner team
