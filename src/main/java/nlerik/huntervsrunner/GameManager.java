@@ -94,6 +94,7 @@ public class GameManager {
                 World.Environment hunterDimension = hunter.getWorld().getEnvironment();
 
                 if ((runnerDimension == World.Environment.NORMAL || runnerDimension == World.Environment.NETHER) && hunterDimension == World.Environment.NORMAL) {
+                    updateCompassInInventory(hunter, runner.getLocation());
                     hunter.setCompassTarget(this.getLastLocation(hunterDimension));
                 }
 
@@ -117,15 +118,21 @@ public class GameManager {
                 CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
 
                 if (compassMeta != null) {
-                    // Here you can modify the compassMeta, for example:
-                    compassMeta.setLodestone(targetLocation);
-                    compassMeta.setLodestoneTracked(false); // Set to false to avoid the compass being linked to a lodestone block
+                    if (hunter.getWorld().getEnvironment() == World.Environment.NORMAL) {
+                        compassMeta.setLodestone(null);
+                        item.setItemMeta(compassMeta);
+                        break;
+                    } else {
+                        // Here you can modify the compassMeta, for example:
+                        compassMeta.setLodestone(targetLocation);
+                        compassMeta.setLodestoneTracked(false); // Set to false to avoid the compass being linked to a lodestone block
 
-                    // Apply the modified meta back to the item
-                    item.setItemMeta(compassMeta);
+                        // Apply the modified meta back to the item
+                        item.setItemMeta(compassMeta);
 
-                    // If you only want to update the first compass found, break the loop
-                    break;
+                        // If you only want to update the first compass found, break the loop
+                        break;
+                    }
                 }
             }
         }
