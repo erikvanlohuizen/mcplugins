@@ -30,13 +30,15 @@ public class GameMenuCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        // check if sender is a player, if true give menu book to every player on the server
         if (sender instanceof Player) {
-            giveMenuBook((Player) sender);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                giveMenuBook(player);
+            }
             return true;
-        } else {
-            sender.sendMessage(ChatColor.RED + "Only players can execute this command!");
-            return false;
         }
+        return false;
     }
 
     private void giveMenuBook(Player player) {
