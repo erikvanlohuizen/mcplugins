@@ -68,7 +68,7 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPortal(PlayerPortalEvent event, JavaPlugin pluginInstance) {
+    public void onPlayerPortal(PlayerPortalEvent event) {
 
         // Check if the game is running
         if (!gameManager.IsGameRunning()) { return; }
@@ -77,9 +77,20 @@ public class GameListener implements Listener {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             Player player = event.getPlayer();
 
+            if (player == null) {
+                String joinMessage = ChatColor.GRAY + "PLayer is null";
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendMessage(joinMessage);
+                }
+                return;
+            }
+
             if (gameManager.getRunner().getUniqueId() == player.getUniqueId()) {
 
-                player.sendMessage("TESTING: Running locate command to find nearest Nether Fortress.");
+                String joinMessage = ChatColor.GRAY + "TESTING: Running locate command to find nearest Nether Fortress.";
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendMessage(joinMessage);
+                }
 
                 World world = player.getWorld();
                 Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
