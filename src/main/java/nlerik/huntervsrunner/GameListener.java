@@ -80,13 +80,20 @@ public class GameListener implements Listener {
             if (gameManager.getRunner().getUniqueId() == player.getUniqueId()) {
 
                 World world = player.getWorld();
-                Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 1000, true);
 
-                if (structureLocation != null) {
-                    player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
-                } else {
-                    player.sendMessage("Could not find a Nether Fortress nearby.");
-                }
+                JavaPlugin plugin = JavaPlugin.getPlugin(HunterVsRunner.class);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 1000, true);
+
+                        if (structureLocation != null) {
+                            player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
+                        } else {
+                            player.sendMessage("Could not find a Nether Fortress nearby.");
+                        }
+                    }
+                }, 40L);
             }
         }
     }
