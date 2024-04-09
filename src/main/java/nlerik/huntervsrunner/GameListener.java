@@ -2,6 +2,7 @@ package nlerik.huntervsrunner;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -77,8 +78,8 @@ public class GameListener implements Listener {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             Player player = event.getPlayer();
 
-            if (gameManager.getRunner().getUniqueId() == player.getUniqueId()) {
-                player.performCommand("/locate structure minecraft:fortress");
+            if (gameManager.getRunner().getUniqueId() == player.getUniqueId() && player.getWorld().getEnvironment() == World.Environment.NETHER) {
+                player.performCommand("locate structure minecraft:fortress");
             }
         }
     }

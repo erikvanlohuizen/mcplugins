@@ -121,6 +121,10 @@ public class GameManager {
                     hunter.setCompassTarget(this.getLastLocation(hunterDimension));
                 }
 
+                if (runnerDimension == World.Environment.NORMAL && hunterDimension == World.Environment.NETHER) {
+                    updateCompassInInventory(hunter, this.getLastLocation(hunterDimension));
+                }
+
                 // If the runner and hunter are in the same dimension, update the compass with lodestone metadata
                 if (runnerDimension == World.Environment.NETHER && hunterDimension == World.Environment.NETHER) {
                     updateCompassInInventory(hunter, runner.getLocation());
