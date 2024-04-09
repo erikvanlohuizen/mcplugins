@@ -93,7 +93,7 @@ public class GameListener implements Listener {
                 }
 
                 World world = player.getWorld();
-                Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
+                Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 1000, false);
 
                 if (structureLocation != null) {
                     player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
