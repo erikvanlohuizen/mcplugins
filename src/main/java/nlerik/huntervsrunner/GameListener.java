@@ -79,17 +79,16 @@ public class GameListener implements Listener {
 
             if (gameManager.getRunner().getUniqueId() == player.getUniqueId()) {
 
-                //run after a second to ensure the player is in the nether
-                Bukkit.getScheduler().runTaskLater(pluginInstance, () -> {
-                    World world = player.getWorld();
-                    Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
+                player.sendMessage("TESTING: Running locate command to find nearest Nether Fortress.");
 
-                    if (structureLocation != null) {
-                        player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
-                    } else {
-                        player.sendMessage("Could not find a Nether Fortress nearby.");
-                    }
-                }, 40);
+                World world = player.getWorld();
+                Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
+
+                if (structureLocation != null) {
+                    player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
+                } else {
+                    player.sendMessage("Could not find a Nether Fortress nearby.");
+                }
             }
         }
     }
