@@ -10,6 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class GameListener implements Listener {
     private final GameManager gameManager;
@@ -67,7 +68,7 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPortal(PlayerPortalEvent event) {
+    public void onPlayerPortal(PlayerPortalEvent event, JavaPlugin pluginInstance) {
 
         // Check if the game is running
         if (!gameManager.IsGameRunning()) { return; }
@@ -76,16 +77,19 @@ public class GameListener implements Listener {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             Player player = event.getPlayer();
 
-            if (gameManager.getRunner().getUniqueId() == player.getUniqueId() && player.getWorld().getEnvironment() == World.Environment.NETHER) {
+            if (gameManager.getRunner().getUniqueId() == player.getUniqueId()) {
 
-                World world = player.getWorld();
-                Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
+                //run after a second to ensure the player is in the nether
+                Bukkit.getScheduler().runTaskLater(pluginInstance, () -> {
+                    World world = player.getWorld();
+                    Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
 
-                if (structureLocation != null) {
-                    player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
-                } else {
-                    player.sendMessage("Could not find a Nether Fortress nearby.");
-                }
+                    if (structureLocation != null) {
+                        player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
+                    } else {
+                        player.sendMessage("Could not find a Nether Fortress nearby.");
+                    }
+                }, 40);
             }
         }
     }
