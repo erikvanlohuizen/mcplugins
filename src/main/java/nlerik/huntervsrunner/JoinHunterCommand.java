@@ -1,5 +1,6 @@
 package nlerik.huntervsrunner;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +24,6 @@ public class JoinHunterCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         gameManager.AddHunter(player);
-        player.sendMessage(player.getName() + " has chosen Hunter!");
 
         // Send a colored title when the player chooses Hunter
         String title = ChatColor.GREEN + "Welcome " + ChatColor.YELLOW + "Hunter!";
@@ -31,6 +31,12 @@ public class JoinHunterCommand implements CommandExecutor {
 
         // Send a colored title with fade-in, display, and fade-out times
         player.sendTitle(title, subtitle, 10, 70, 20);
+
+        String joinMessage = ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " has joined as a " + ChatColor.GREEN + "Hunter!";
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.sendMessage(joinMessage);
+        }
+
 
         // Logic to handle joining the hunter team
         return true;
