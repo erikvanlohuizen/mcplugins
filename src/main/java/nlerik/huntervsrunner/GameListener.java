@@ -1,8 +1,6 @@
 package nlerik.huntervsrunner;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -79,7 +77,15 @@ public class GameListener implements Listener {
             Player player = event.getPlayer();
 
             if (gameManager.getRunner().getUniqueId() == player.getUniqueId() && player.getWorld().getEnvironment() == World.Environment.NETHER) {
-                player.performCommand("locate structure minecraft:fortress");
+
+                World world = player.getWorld();
+                Location structureLocation = world.locateNearestStructure(player.getLocation(), StructureType.NETHER_FORTRESS, 100, false);
+
+                if (structureLocation != null) {
+                    player.sendMessage("Nearest Nether Fortress is at: " + structureLocation.getBlockX() + ", " + structureLocation.getBlockY() + ", " + structureLocation.getBlockZ());
+                } else {
+                    player.sendMessage("Could not find a Nether Fortress nearby.");
+                }
             }
         }
     }
