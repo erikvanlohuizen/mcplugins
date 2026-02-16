@@ -21,6 +21,7 @@ public final class HunterVsRunner extends JavaPlugin {
         getCommand("startgame").setExecutor(new StartCommand(gameManager));
         getCommand("huntervsrunner").setExecutor(new GameMenuCommand(gameManager));
 
+
         Bukkit.getServer().getPluginManager().registerEvents(new GameListener(gameManager), this);
     }
 

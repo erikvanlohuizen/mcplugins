@@ -3,6 +3,9 @@ version: '${project.version}'
 main: nlerik.huntervsrunner.HunterVsRunner
 api-version: '1.20'
 commands:
+  huntervsrunner:
+    description: Open het menu
+    usage: /huntervsrunner
   joinhunter:
     description: Join the hunter team
     usage: /joinhunter
@@ -12,6 +15,4 @@ commands:
   startgame:
     description: Start the game
     usage: /startgame
-  huntervsrunner:
-    description: Open het menu
-    usage: /huntervsrunner
+

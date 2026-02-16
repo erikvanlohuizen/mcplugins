@@ -21,12 +21,16 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 
+
 public class GameMenuCommand implements CommandExecutor, Listener {
     private final GameManager gameManager;
 
     public GameMenuCommand(GameManager gameManager) {
         this.gameManager = gameManager;
+        System.out.println("GameMenuCommand loaded!");
     }
+
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -35,7 +39,9 @@ public class GameMenuCommand implements CommandExecutor, Listener {
         if (sender instanceof Player) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 giveMenuBook(player);
+                player.sendMessage("Command received!");
             }
+
             return true;
         }
         return false;
@@ -43,8 +49,12 @@ public class GameMenuCommand implements CommandExecutor, Listener {
 
     private void giveMenuBook(Player player) {
         ItemStack menuBook = createMenuBook();
-        player.getInventory().addItem(menuBook);
-        player.sendMessage(ChatColor.GREEN + "You received the game menu book!");
+        if (menuBook != null) {
+            player.getInventory().addItem(menuBook);
+            player.sendMessage(ChatColor.GREEN + "You received the game menu book!");
+        } else {
+            player.sendMessage(ChatColor.RED + "Error: menu book could not be created.");
+        }
     }
 
     private ItemStack createMenuBook() {
