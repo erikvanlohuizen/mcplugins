@@ -1,58 +1,94 @@
 package nlerik.huntervsrunner;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 
-public class GameMenuCommand implements CommandExecutor {
 
+public class GameMenuCommand implements CommandExecutor, Listener {
     private final GameManager gameManager;
 
-    // Constructor die GameManager accepteert
     public GameMenuCommand(GameManager gameManager) {
         this.gameManager = gameManager;
+        System.out.println("GameMenuCommand loaded!");
     }
+
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("Dit command kan alleen in-game worden uitgevoerd!");
+        // check if sender is a player, if true give menu book to every player on the server
+        if (sender instanceof Player) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                giveMenuBook(player);
+                player.sendMessage("Command received!");
+            }
+
             return true;
         }
+        return false;
+    }
 
-        Player player = (Player) sender;
-
-        // Geef het menu-boek
+    private void giveMenuBook(Player player) {
         ItemStack menuBook = createMenuBook();
-        player.getInventory().addItem(menuBook);
-        player.sendMessage(ChatColor.GREEN + "Je hebt het Game Menu boek ontvangen!");
-        return true;
+        if (menuBook != null) {
+            player.getInventory().addItem(menuBook);
+            player.sendMessage(ChatColor.GREEN + "You received the game menu book!");
+        } else {
+            player.sendMessage(ChatColor.RED + "Error: menu book could not be created.");
+        }
     }
 
     private ItemStack createMenuBook() {
         ItemStack menuBook = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) menuBook.getItemMeta();
+        bookMeta.setTitle("Game Menu");
+        bookMeta.setAuthor("Server");
 
-        if (bookMeta != null) {
-            bookMeta.setTitle("Game Menu");
-            bookMeta.setAuthor("Server");
+        TextComponent.Builder builder = Component.text().color(NamedTextColor.DARK_RED)
+                .content("Game Menu\nClick the options below to perform actions:\n\n")
+                .append(Component.text("[Join the hunters]").color(NamedTextColor.DARK_BLUE)
+                        .clickEvent(ClickEvent.runCommand("/joinhunter"))
+                        .hoverEvent(Component.text("Click to join the hunters").color(NamedTextColor.BLUE)))
+                .append(Component.text("\n[Join the runners]").color(NamedTextColor.DARK_PURPLE)
+                        .clickEvent(ClickEvent.runCommand("/joinrunner"))
+                        .hoverEvent(Component.text("Click to join the runners").color(NamedTextColor.DARK_PURPLE)))
+                .append(Component.text("\n[Start the game]").color(NamedTextColor.DARK_GREEN)
+                        .clickEvent(ClickEvent.runCommand("/startgame"))
+                        .hoverEvent(Component.text("Click to start the game").color(NamedTextColor.GREEN)));
 
-            // Eenvoudige pagina met kleuren, zonder Kyori
-            String page = ChatColor.DARK_RED + "Game Menu\n\n"
-                    + ChatColor.BLUE + "[Join Hunters] " + ChatColor.WHITE + "- gebruik /joinhunter\n"
-                    + ChatColor.DARK_PURPLE + "[Join Runners] " + ChatColor.WHITE + "- gebruik /joinrunner\n"
-                    + ChatColor.DARK_GREEN + "[Start Game] " + ChatColor.WHITE + "- gebruik /startgame";
-
-            bookMeta.addPage(page);
-            menuBook.setItemMeta(bookMeta);
-        }
-
+        bookMeta.addPages(builder.build());
+        menuBook.setItemMeta(bookMeta);
         return menuBook;
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        if (item != null && item.getType() == Material.WRITTEN_BOOK && item.hasItemMeta()) {
+            BookMeta bookMeta = (BookMeta) item.getItemMeta();
+            if (bookMeta != null && bookMeta.getTitle().equals("Game Menu")) {
+                event.setCancelled(true);
+            }
+        }
     }
 }
