@@ -13,7 +13,6 @@ public class StopGameCommand implements CommandExecutor {
 
     public StopGameCommand(GameManager gameManager) {
         this.gameManager = gameManager;
-        System.out.println("StopGameCommand loaded!");
     }
 
     @Override
@@ -22,7 +21,15 @@ public class StopGameCommand implements CommandExecutor {
         if (sender instanceof Player player) {
             if (gameManager.IsGameRunning()) {
                 gameManager.stopGame(false);
-                Bukkit.broadcastMessage(ChatColor.RED + "The game has been stopped by " + player.getName() + "!");
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    p.sendTitle(
+                            ChatColor.RED + "Game Stopped",
+                            ChatColor.YELLOW + "Stopped by " + player.getName(),
+                            10, 70, 20
+                    );
+                }
+
+
             } else {
                 player.sendMessage(ChatColor.YELLOW + "No game is currently running.");
             }
@@ -32,6 +39,7 @@ public class StopGameCommand implements CommandExecutor {
             if (gameManager.IsGameRunning()) {
                 gameManager.stopGame(false);
                 Bukkit.getServer().broadcastMessage(ChatColor.RED + "The game has been stopped by the console!");
+
             } else {
                 System.out.println("No game is currently running.");
             }
