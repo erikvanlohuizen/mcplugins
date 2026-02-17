@@ -26,7 +26,7 @@ public class JoinHunterCommand implements CommandExecutor {
         gameManager.AddHunter(player);
 
         // Send a colored title when the player chooses Hunter
-        String title = ChatColor.GREEN + "Welcome " + ChatColor.YELLOW + "Hunter!";
+        String title = ChatColor.GREEN + "Welcome dikke pipo" + ChatColor.YELLOW + "Hunter!";
         String subtitle = ChatColor.AQUA + "Prepare for the hunt!";
 
         // Send a colored title with fade-in, display, and fade-out times
