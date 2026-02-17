@@ -15,4 +15,6 @@ commands:
   startgame:
     description: Start the game
     usage: /startgame
-
+  stopgame:
+    description: Start the game
+    usage: /stopgame
