@@ -27,12 +27,12 @@ public class JoinHunterCommand implements CommandExecutor {
 
         // Send a colored title when the player chooses Hunter
         String title = ChatColor.GREEN + "Welcome dikke pipo" + ChatColor.YELLOW + "Hunter!";
-        String subtitle = ChatColor.AQUA + "Prepare for the hunt!";
+        String subtitle = ChatColor.AQUA + "Bereid je voor!";
 
         // Send a colored title with fade-in, display, and fade-out times
         player.sendTitle(title, subtitle, 10, 70, 20);
 
-        String joinMessage = ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " has joined as a " + ChatColor.GREEN + "Hunter!";
+        String joinMessage = ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " is nu een " + ChatColor.GREEN + "Hunter!";
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.sendMessage(joinMessage);
         }
