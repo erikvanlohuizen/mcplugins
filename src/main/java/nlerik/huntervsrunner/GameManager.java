@@ -32,15 +32,25 @@ public class GameManager {
         // Stop the game & clear teams
         gameRunning = false;
         clearTeams();
+        runner = null;
+        hunters = null;
 
         // Send a message to all players about who won the game
         if (runnerWon) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(ChatColor.GREEN + "The runner has won the game!");
+                player.setFoodLevel(20);
+                player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+                runner.clearTitle();
+                gameRunning = false;
             }
         } else {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(ChatColor.RED + "The hunters have won the game!");
+                player.setFoodLevel(20);
+                player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+                hunters.clear();
+                gameRunning = false;
             }
         }
     }
