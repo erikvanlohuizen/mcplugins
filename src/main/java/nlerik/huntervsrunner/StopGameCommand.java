@@ -13,6 +13,8 @@ public class StopGameCommand implements CommandExecutor {
 
     public StopGameCommand(GameManager gameManager) {
         this.gameManager = gameManager;
+        // Re‑enable locator bar
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "gamerule locator_bar true");
     }
 
     @Override

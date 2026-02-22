@@ -18,6 +18,7 @@ public class StartCommand implements CommandExecutor {
 
     public StartCommand(GameManager gameManager) {
         this.gameManager = gameManager;
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "gamerule locator_bar false");
     }
 
     @Override

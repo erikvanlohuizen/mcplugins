@@ -26,8 +26,6 @@ public class GameListener implements Listener {
         // Check if the game is running
         if (!gameManager.IsGameRunning()) { return; }
 
-
-
         // Check if the player is the runner, if so stop the game
         if (gameManager.getRunner().getUniqueId() == event.getEntity().getUniqueId()) {
             gameManager.stopGame(false);
