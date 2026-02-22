@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +37,18 @@ public class GameListener implements Listener {
         }
     }
 
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+
+        // Check if the game is running
+        if (!gameManager.IsGameRunning()) { return; }
+
+        // Check if the player is a hunter, if so add a compass to their inventory
+        if (gameManager.getHunters().contains(event.getPlayer())) {
+            event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
+        }
+        }
     @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
 
