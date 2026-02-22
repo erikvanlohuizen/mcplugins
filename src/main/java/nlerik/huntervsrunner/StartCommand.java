@@ -18,7 +18,7 @@ public class StartCommand implements CommandExecutor {
 
     public StartCommand(GameManager gameManager) {
         this.gameManager = gameManager;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "gamerule locator_bar false");
+
     }
 
     @Override
@@ -30,6 +30,7 @@ public class StartCommand implements CommandExecutor {
         for (World world : Bukkit.getWorlds()) {
             world.setDifficulty(Difficulty.NORMAL);
         }
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "gamerule locator_bar false");
 
         for (Player player : hunters) {
             player.setGameMode(GameMode.SURVIVAL);
