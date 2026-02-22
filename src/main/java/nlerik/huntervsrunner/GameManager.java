@@ -77,23 +77,39 @@ public class GameManager {
     }
 
     public void AddHunter(Player player) {
-
-        // Add the player to the hunters team if the game is not running and the player is not already a hunter
-        if (gameRunning || hunters.contains(player)) {
+        if (gameRunning) {
+            player.sendMessage(ChatColor.RED + "Cannot change roles while game is running!");
             return;
         }
 
-        hunters.add(player);
+        // Remove from runner if needed
+        if (player.equals(runner)) {
+            runner = null;
+        }
+
+        // Prevent duplicate
+        if (!hunters.contains(player)) {
+            hunters.add(player);
+            player.sendMessage(ChatColor.GREEN + "You are now a Hunter!");
+        }
     }
 
     public void SetRunner(Player player) {
-
-        // Set the player as the runner if the game is not running
         if (gameRunning) {
+            player.sendMessage(ChatColor.RED + "Cannot change roles while game is running!");
             return;
         }
 
+        // Remove from hunters if needed
+        hunters.remove(player);
+
+        // Optionally notify old runner
+        if (runner != null && !runner.equals(player)) {
+            runner.sendMessage(ChatColor.RED + "You are no longer the Runner!");
+        }
+
         runner = player;
+        player.sendMessage(ChatColor.AQUA + "You are now the Runner!");
     }
 
     public void clearTeams() {
