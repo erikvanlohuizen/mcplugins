@@ -31,6 +31,7 @@ public class StartCommand implements CommandExecutor {
             world.setDifficulty(Difficulty.NORMAL);
         }
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "gamerule locator_bar false");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "time set day");
 
         for (Player player : hunters) {
             player.setGameMode(GameMode.SURVIVAL);
