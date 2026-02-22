@@ -26,10 +26,7 @@ public class GameListener implements Listener {
         // Check if the game is running
         if (!gameManager.IsGameRunning()) { return; }
 
-        // Check if the player is a hunter, if so add a compass to their inventory
-        if (gameManager.getHunters().contains(event.getPlayer())) {
-            event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
-        }
+
 
         // Check if the player is the runner, if so stop the game
         if (gameManager.getRunner().getUniqueId() == event.getEntity().getUniqueId()) {
