@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +16,8 @@ public class GameManager {
     private boolean gameRunning = false;
     private Player runner;
     private List<Player> hunters = new ArrayList<>();
+    private BukkitTask compassTask;
+
 
     private Map<World.Environment, Location> runnerLocations = new HashMap<>();
 
@@ -31,28 +33,31 @@ public class GameManager {
 
         // Stop the game & clear teams
         gameRunning = false;
-        clearTeams();
-        runner = null;
-        hunters = null;
 
-        // Send a message to all players about who won the game
-        if (runnerWon) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(ChatColor.GREEN + "The runner has won the game!");
-                player.setFoodLevel(20);
-                player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-                runner.clearTitle();
-                gameRunning = false;
-            }
-        } else {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(ChatColor.RED + "The hunters have won the game!");
-                player.setFoodLevel(20);
-                player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-                hunters.clear();
-                gameRunning = false;
-            }
+        // Stop compass updater
+        if (compassTask != null) {
+            compassTask.cancel();
+            compassTask = null;
         }
+
+        // Stuur win message
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            if (runnerWon) {
+                player.sendMessage(ChatColor.GREEN + "The runner has won the game!");
+            } else {
+                player.sendMessage(ChatColor.RED + "The hunters have won the game!");
+            }
+
+            player.setFoodLevel(20);
+            player.setHealth(20);
+            player.getActivePotionEffects()
+                    .forEach(effect -> player.removePotionEffect(effect.getType()));
+        }
+
+        // Cleanup state
+        runnerLocations.clear();
+        clearTeams();
     }
 
     public void updateRunnerLocation(World.Environment dimension, Location location) {
